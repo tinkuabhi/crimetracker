@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+@import "tailwindcss";
+
+html { scroll-behavior: smooth; }
+
+body { margin: 0; font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; }
+
+.tracker-app { min-height: 100vh; }
+
+.tracker-app button, .tracker-app a, .tracker-app input, .tracker-app textarea, .tracker-app select { -webkit-tap-highlight-color: transparent; }
+
+.legacy-ui [class*='bg-slate-900'], .legacy-ui [class*='bg-slate-950'], .legacy-ui [class*='bg-slate-800'] { background-color: #ffffff !important; }
+.legacy-ui thead[class*='bg-slate'], .legacy-ui > div:last-child > div:last-child { background-color: #f8fafc !important; }
+.legacy-ui .border-slate-800, .legacy-ui .border-slate-800\/80, .legacy-ui .border-slate-700 { border-color: #e2e8f0 !important; }
+.legacy-ui .text-slate-100, .legacy-ui .text-slate-200 { color: #0f172a !important; }
+.legacy-ui .text-slate-300 { color: #334155 !important; }
+.legacy-ui .text-slate-400 { color: #64748b !important; }
+.legacy-ui .text-slate-500, .legacy-ui .text-slate-600 { color: #64748b !important; }
+.legacy-ui .shadow-md { box-shadow: 0 8px 24px rgb(15 23 42 / 0.06); }
+.legacy-ui [class*='hover:bg-slate-8']:hover { background-color: #f1f5f9 !important; }
+.legacy-ui input, .legacy-ui select { color: #0f172a !important; background-color: #ffffff !important; }
+
+.priority-brief { background: linear-gradient(135deg, #fff1f2, #ffffff 58%, #fffbeb); border: 1px solid #fecdd3; }
+.priority-brief h3 { color: #0f172a; font-family: 'Manrope', sans-serif; letter-spacing: -0.01em; }
+.priority-brief > div:first-child > button { color: #0f766e; background: #fff; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 0.5rem 0.75rem; }
+.priority-brief > div:first-child > button:hover { background: #f0fdfa; color: #115e59; }
+.priority-brief .bg-slate-950\/70 { background: #ffffff; border-color: #e2e8f0; border-radius: 1rem; box-shadow: 0 1px 2px rgb(15 23 42 / 0.04); }
+.priority-brief .bg-slate-950\/70:hover { border-color: #fda4af; box-shadow: 0 8px 20px rgb(15 23 42 / 0.08); }
+.priority-brief .text-slate-300 { color: #475569; }
+.priority-brief .group-hover\:text-slate-100:hover { color: #0f172a; }
+.priority-brief .text-cyan-400 { color: #0f766e; font-family: 'Manrope', sans-serif; }
+.priority-brief .text-slate-500 { color: #64748b; }
+.priority-brief .bg-red-950\/90 { background: #fff1f2; border-color: #fecdd3; color: #be123c; }
+.priority-brief .bg-amber-950\/90 { background: #fffbeb; border-color: #fde68a; color: #a16207; }

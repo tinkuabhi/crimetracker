@@ -1,0 +1,6 @@
+{
+  "name": "Indian Crime Tracker",
+  "description": "Real-time intelligence and incident monitoring portal aggregating hyper-local crime, accident, and hazard reports across Indian states with AI grounding and predictive safety advisories.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
