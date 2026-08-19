@@ -1,0 +1,20 @@
+# Terraform directories
+**/.terraform/*
+
+# State files
+*.tfstate
+*.tfstate.*
+
+# Crash logs
+crash.log
+
+# Plan files
+*.plan
+
+# Sensitive variable files
+*.tfvars
+*.tfvars.json
+
+# Optional: ignore lock file (commit if you want reproducible provider versions)
+.terraform.lock.hcl
+.terraform
