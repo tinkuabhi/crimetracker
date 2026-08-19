@@ -1,0 +1,12 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY backend/ai_fetcher.py ./ai_fetcher.py
+
+RUN pip install --no-cache-dir \
+    google-genai \
+    python-dotenv \
+    requests
+
+CMD ["python", "ai_fetcher.py"]
