@@ -16,92 +16,101 @@ export default function App() {
   const [incidents, setIncidents] = useState<IncidentRecord[]>(INITIAL_INCIDENTS);
   const [timeFilter, setTimeFilter] = useState<TimeFilter>('all');
   const [selectedState, setSelectedState] = useState<string>('all');
-  const [selectedIncident, setSelectedIncident] = useState<IncidentRecord | null>(null);
+  const [selectedIncident, setSelectedIncident] =
+    useState<IncidentRecord | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isAiLoading, setIsAiLoading] = useState(false);
   const [dbType, setDbType] = useState('In-Memory / Atlas Ready');
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' | 'error' } | null>(null);
+  const [toast, setToast] = useState<{
+    message: string;
+    type: 'success' | 'info' | 'error';
+  } | null>(null);
 
-  const showToast = (message: string, type: 'success' | 'info' | 'error' = 'success') => {
+  const showToast = (
+    message: string,
+    type: 'success' | 'info' | 'error' = 'success'
+  ) => {
     setToast({ message, type });
+
     setTimeout(() => {
-      setToast((prev) => (prev?.message === message ? null : prev));
+      setToast((prev) =>
+        prev?.message === message ? null : prev
+      );
     }, 4000);
   };
 
   // Fetch live records from backend API
   const fetchRecords = useCallback(async () => {
     try {
-      const res = await fetch('/api/records?limit=100');
+      const res = await fetch('/api/records?limit=1000000');
+
       if (res.ok) {
         const json = await res.json();
-        if (json.data && Array.isArray(json.data) && json.data.length > 0) {
+
+        if (
+          json.data &&
+          Array.isArray(json.data) &&
+          json.data.length > 0
+        ) {
           setIncidents(json.data);
         }
       }
     } catch (err) {
-      console.warn('Backend API fetching notice, using local synchronized state:', err);
+      console.warn(
+        'Backend API fetching notice, using local synchronized state:',
+        err
+      );
     }
   }, []);
 
-  // Fetch system health info
+  // Fetch system health information
   const fetchHealth = useCallback(async () => {
     try {
       const res = await fetch('/api/health');
+
       if (res.ok) {
         const data = await res.json();
+
         if (data.database?.type) {
           setDbType(data.database.type);
         }
       }
     } catch {
-      // ignore
+      // Ignore health check errors
     }
   }, []);
 
+  // Load backend data when application starts
   useEffect(() => {
     fetchRecords();
     fetchHealth();
   }, [fetchRecords, fetchHealth]);
 
-  // Trigger AI Ingestion
-  const handleTriggerAI = async () => {
-    setIsAiLoading(true);
-    try {
-      const res = await fetch('/api/trigger-fetch', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ region: 'All_India', date: new Date().toISOString().slice(0, 10) })
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        showToast(data.message || 'AI Ingest pipeline fetched new ground incidents.', 'success');
-        fetchRecords();
-      } else {
-        showToast(data.error || 'AI Ingest pipeline encountered an issue.', 'error');
-      }
-    } catch (err: any) {
-      showToast('AI Ingest pipeline execution completed with synthetic batch.', 'info');
-    } finally {
-      setIsAiLoading(false);
-    }
-  };
-
+  // Manual incident successfully added
   const handleManualSuccess = (newRecord: IncidentRecord) => {
     setIncidents((prev) => [newRecord, ...prev]);
-    showToast(`New incident in ${newRecord.state} recorded successfully!`, 'success');
+
+    showToast(
+      `New incident in ${newRecord.state} recorded successfully!`,
+      'success'
+    );
+
     fetchRecords();
   };
 
+  // Filter registry by state from dashboard
   const handleStateFilterFromChart = (state: string) => {
     setSelectedState(state);
     setActiveTab('registry');
-    showToast(`Filtering Incident Registry for state: ${state}`, 'info');
+
+    showToast(
+      `Filtering Incident Registry for state: ${state}`,
+      'info'
+    );
   };
 
   return (
     <div className="tracker-app min-h-screen bg-[#f7f8f5] text-slate-900 selection:bg-teal-200 selection:text-slate-950">
+
       {/* Toast Banner */}
       {toast && (
         <div className="fixed top-20 right-4 z-50 animate-bounce">
@@ -119,7 +128,9 @@ export default function App() {
             ) : (
               <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
             )}
+
             <span>{toast.message}</span>
+
             <button
               onClick={() => setToast(null)}
               className="p-1 hover:text-white rounded"
@@ -136,26 +147,31 @@ export default function App() {
         isLive={true}
         onRefresh={() => {
           fetchRecords();
-          showToast('Incident registry refreshed from central store.', 'info');
+          showToast(
+            'Incident registry refreshed from central store.',
+            'info'
+          );
         }}
-        onTriggerAI={handleTriggerAI}
         onOpenAddModal={() => setIsAddModalOpen(true)}
-        isAiLoading={isAiLoading}
         dbType={dbType}
       />
 
-      {/* Navigation Bar (4 Distinct Tabs) */}
+      {/* Navigation Bar */}
       <Navigation
         activeTab={activeTab}
         onTabChange={(tab) => {
           setActiveTab(tab);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
         }}
         recordCount={incidents.length}
       />
 
       {/* Main Tab Views */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+
         {activeTab === 'dashboard' && (
           <DashboardTab
             incidents={incidents}
@@ -180,9 +196,10 @@ export default function App() {
         {activeTab === 'safety' && <SafetyAdviserTab />}
 
         {activeTab === 'about' && <AboutContactTab />}
+
       </main>
 
-      {/* Incident Detail Modal (for 2-line truncation + Read More) */}
+      {/* Incident Detail Modal */}
       <IncidentDetailModal
         incident={selectedIncident}
         onClose={() => setSelectedIncident(null)}
@@ -194,6 +211,7 @@ export default function App() {
         onClose={() => setIsAddModalOpen(false)}
         onSuccess={handleManualSuccess}
       />
+
     </div>
   );
 }
